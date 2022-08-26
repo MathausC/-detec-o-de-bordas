@@ -1,11 +1,9 @@
 import sys
 import cv2 as cv
-from cv2 import GaussianBlur
 import numpy as np
 
 def main(argv):
-    
-    window_name = ('Sobel Demo - Simple Edge Detector')
+
     scale = 1
     delta = 0
     ddepth = cv.CV_16S
@@ -34,13 +32,25 @@ def main(argv):
     
     grad = cv.addWeighted(abs_grad_x, 0.5, abs_grad_y, 0.5, 0)    
     
-    cv.imshow(window_name, grad)
+    cv.imshow('Sobel', grad)
     cv.waitKey(0)
 
-    kernel = 
+    verticalKernel = np.matrix([[1, 1, 1], [0, 0, 0], [-1, -1, -1]])
 
-    grad_x = cv.filter2D(gray, ddepth, )
+    horizontalKernel = verticalKernel.transpose()
+
+    grad2_x = cv.filter2D(gray, ddepth, horizontalKernel)
+    grad2_y = cv.filter2D(gray, ddepth, verticalKernel)
+
+    abs_grad2_x = cv.convertScaleAbs(grad2_x)
+    abs_grad2_y = cv.convertScaleAbs(grad2_y)
+
+    grad2 = cv.addWeighted(abs_grad2_x, 0.5, abs_grad2_y, 0.5, 0)
+
+    cv.imshow('Prewitt', grad2)
+    cv.waitKey(0)
     
     return 0
+
 if __name__ == "__main__":
     main(sys.argv[1:])
